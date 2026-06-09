@@ -1,0 +1,25 @@
+# Local operator guidance
+AGENTS.md
+
+# Demo datasets and generated outputs
+demo/bags/*.bag
+demo/bags/*.bag.active
+demo/bags/*.mcap
+demo/logs/*.mp4
+demo/logs/*.mkv
+demo/logs/*.log
+demo/logs/*.bag
+
+# ROS/catkin temporary files
+.ros/
+log/
+build/
+devel/
+install/
+.catkin_tools/
+
+# Python/cache noise
+__pycache__/
+*.py[cod]
+.pytest_cache/
+

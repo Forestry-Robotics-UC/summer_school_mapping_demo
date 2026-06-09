@@ -1,0 +1,102 @@
+# PRUNE dataset override for the live summer-school forest event_points replay.
+# Replace frame/topic names only if the prepared bag uses different names.
+
+# Semantic mask topic generated from the RealSense color stream.
+# Convention for this demo: 0 = non-sky/valid, 255 = sky/invalid.
+semantic_topic: "/camera/color/image_raw"
+
+# Semantic encoding for /semantic/mask. Use "rgb" with semantic_topic=/camera/color/image_raw
+# only if the demo should transfer RealSense colors instead of the binary mask.
+semantic_input_type: "rgb"
+
+# Camera intrinsics file for the 480p summer school replay. This bypasses waiting
+# on a live CameraInfo topic when replaying the prepared bag.
+camera_info_txt: "/workspace/demo/calibration/curt_mini_realsense_camera_info_480p.txt"
+
+# CameraInfo topic intentionally disabled: intrinsics come from camera_info_txt above.
+# Uncomment only if running against a live camera driver instead of a bag.
+# camera_info: "/camera/color/camera_info"
+
+# Geometry input topic. PRUNE auto-detects PointCloud2 and uses LiDAR projection mode.
+depth_input_topic: "/ouster/points"
+
+# PRUNE output frame for the generated semantic point cloud. The CurtMini URDF publishes
+# LiDAR/camera extrinsics into this frame through robot_state_publisher.
+target_frame: "base_link"
+
+# Force LiDAR mode for deterministic demo behavior.
+mode: "lidar"
+
+# Keep replay synchronization strict enough for synchronized summer school bags.
+sync_slop_sec: 0.03
+
+# Hard maximum timestamp delta between semantic image and LiDAR cloud.
+pair_max_dt_sec: 0.1
+
+# ApproximateTime queue size for mask/LiDAR pairing.
+sync_queue_size: 10
+
+# Output cloud stamp source. "lidar" keeps map updates aligned to Ouster scans.
+cloud_stamp_source: "lidar"
+
+# Publish deterministic RGB colors for label IDs.
+colorize_labels: false
+
+# Keep points outside the camera field of view out of the output cloud.
+include_unlabeled: false
+
+# Maximum LiDAR transfer range in meters for the live forest replay.
+max_depth_m: 30
+
+# Invalid-mask gate topic. Same image as semantic_topic in this binary sky-mask demo.
+projection_invalid_mask_topic: "/semantic/mask"
+
+# Pixel value in projection_invalid_mask_topic that means invalid/sky.
+projection_invalid_mask_value: 255
+
+# Dilation radius in pixels applied before sampling the invalid mask.
+projection_invalid_mask_dilate_px: 2
+
+# Apply Rz(180 deg) to incoming Ouster points before projection. Needed when the
+# projection lands in the correct FOV but yawed 180 deg (front/back swapped).
+compat_ouster_sensor_frame: false
+
+# Enable the invalid-mask gate in PRUNE's projector.
+use_invalid_mask: true
+
+# Enable LiDAR depth-edge rejection evidence and runtime gate.
+use_depth_edge_rejection: true
+
+# Enable occlusion rejection evidence and runtime gate.
+use_occlusion_gate: true
+
+# Odd patch size used for robust image sampling around each projected LiDAR point.
+projection_patch_size: 3
+
+# Minimum patch confidence for transfer. 0 disables confidence rejection because
+# the generated sky-mask bag has no confidence topic.
+projection_confidence_min: 0.0
+
+# Reject projected points near strong LiDAR depth discontinuities.
+projection_reject_depth_edges: true
+
+# Occlusion margin in meters against the nearest LiDAR depth at a projected pixel.
+projection_occlusion_epsilon_m: 0.20
+
+# Pixel radius used for local occlusion depth support.
+projection_occlusion_radius_px: 1
+
+# Disable high-volume debug overlays during the controlled live demo.
+debug_project_lidar: true
+
+# Print a compact runtime status table during the demo.
+status_period: 2.0
+
+# Write PLY snapshots under the mounted demo logs folder when services are called.
+ply_output_dir: "/workspace/demo/logs/ply"
+
+# Optional static LiDAR-to-camera matrix; leave empty when TF/static TFs are supplied.
+static_camera_T_lidar: []
+
+# Optional static LiDAR-to-target matrix; leave empty when TF/static TFs are supplied.
+static_target_T_lidar: []

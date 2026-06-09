@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+source /opt/ros/noetic/setup.bash
+
+export ROS_MASTER_URI="${ROS_MASTER_URI:-http://localhost:11311}"
+export ROS_IP="${ROS_IP:-127.0.0.1}"
+export QT_X11_NO_MITSHM="${QT_X11_NO_MITSHM:-1}"
+
+if [[ -f /workspace/catkin_ws/devel/setup.bash ]]; then
+  source /workspace/catkin_ws/devel/setup.bash
+elif [[ "${AUTO_CATKIN_BUILD:-false}" == "true" ]]; then
+  echo "[entrypoint] /workspace/catkin_ws/devel/setup.bash not found; building mounted workspace."
+  cd /workspace/catkin_ws
+  catkin build
+  source /workspace/catkin_ws/devel/setup.bash
+fi
+
+cat <<'EOF'
+ForestSphere summer school demo container
+
+Useful commands:
+  /workspace/demo/scripts/check_demo_ready.sh
+  /workspace/demo/scripts/run_mapping.sh
+  /workspace/demo/scripts/run_full_pipeline.sh
+  /workspace/demo/scripts/run_prune.sh
+  /workspace/demo/scripts/replay_bag.sh
+
+Build workspace if needed:
+  cd /workspace/catkin_ws && catkin build
+EOF
+
+exec "$@"

@@ -1,0 +1,38 @@
+# Summer school live-demo parameter reference.
+# The current entfac_mapping_ros semantic_mapping.launch loads package configs by backend/site.
+# Use these values to update the package config or launch arguments before demo day.
+
+# Mapper input topic produced by PRUNE.
+pointcloud_topic: "/colored_pcl_node/semantic_pointcloud"
+
+# Mapper world frame used for TF lookup and map publication.
+world_frame: "map"
+
+# Backend selected for reliable live demos; switch to bonxai/octomap/ufomap only after image validation.
+backend: "dummy"
+
+# Publish rate for the accumulated semantic map point cloud.
+publish_rate_hz: 2.0
+
+# Metrics publication rate for operator monitoring.
+metrics_rate_hz: 0.2
+
+# Semantic/occupancy layer settings for the forest label set.
+layers:
+  # Occupancy layer stores observed free/occupied structure.
+  occupancy: {}
+  # Semantics layer stores class distributions per mapped cell.
+  semantics:
+    # Number of semantic classes in the prepared forest mask stream.
+    num_classes: 13
+    # Dirichlet prior for semantic fusion.
+    prior_alpha: 0.5
+    # Upper bound for accumulated semantic evidence.
+    alpha_sum_max: 100.0
+    # Semantic fusion rule used by the mapper.
+    fusion_rule: "dirichlet"
+
+# Optional UFOMapping note:
+# If a UFOMapping ROS package is mounted under /workspace/catkin_ws/src/ufomap and built,
+# use its package launch directly or add an entfac_mapping_ros backend/launch wrapper.
+# This placeholder file does not invent a package name because UFOMAP package names differ by fork.

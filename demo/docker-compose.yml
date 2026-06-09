@@ -1,0 +1,53 @@
+services:
+  summer_school_demo_maintainer:
+    build:
+      context: ../..
+      dockerfile: summer_school_mapping_demo/demo/Dockerfile
+      args:
+        USERNAME: ${SUMMER_SCHOOL_DEMO_USER:-demo}
+        USER_UID: ${SUMMER_SCHOOL_DEMO_UID:-1000}
+        USER_GID: ${SUMMER_SCHOOL_DEMO_GID:-1000}
+    image: ${SUMMER_SCHOOL_DEMO_IMAGE:-forestsphere-summer-school-demo:noetic}
+    container_name: forestsphere_summer_school_demo_maintainer
+    network_mode: host
+    stdin_open: true
+    tty: true
+    working_dir: /workspace/demo
+    # Single source of truth: all settings (incl. DISPLAY/ROS_MASTER_URI/ROS_IP) come from .env.
+    env_file:
+      - .env
+    volumes:
+      - ${SUMMER_SCHOOL_DATASET_DIR:-./bags}:/workspace/demo/bags:ro
+      - ./calibration:/workspace/demo/calibration:ro
+      - ./config:/workspace/demo/config:rw
+      - ./logs:/workspace/demo/logs:rw
+      - ./scripts:/workspace/demo/scripts:ro
+      # PRUNE and ENTFAC-Mapping are built into the image (binary only); no source
+      # mounts. Everything demo-specific (scripts, urdf, meshes, config, calibration)
+      # is local to this repo and mounted, so edits apply without rebuilding.
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    command: ["/bin/bash"]
+  summer_school_demo_gui:
+    build:
+      context: ../..
+      dockerfile: summer_school_mapping_demo/demo/Dockerfile
+      args:
+        USERNAME: ${SUMMER_SCHOOL_DEMO_USER:-demo}
+        USER_UID: ${SUMMER_SCHOOL_DEMO_UID:-1000}
+        USER_GID: ${SUMMER_SCHOOL_DEMO_GID:-1000}
+    image: ${SUMMER_SCHOOL_DEMO_IMAGE:-forestsphere-summer-school-demo:noetic}
+    container_name: forestsphere_summer_school_demo_gui
+    network_mode: host
+    stdin_open: true
+    tty: true
+    working_dir: /workspace/demo
+    # Single source of truth: all settings (incl. DISPLAY/ROS_MASTER_URI/ROS_IP) come from .env.
+    env_file:
+      - .env
+    volumes:
+      - ${SUMMER_SCHOOL_DATASET_DIR:-./bags}:/workspace/demo/bags:ro
+      - ./calibration:/workspace/demo/calibration:ro
+      - ./config:/workspace/demo/config:ro
+      - ./logs:/workspace/demo/logs:rw
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    command: ["rviz", "-d", "/workspace/demo/config/rviz_demo.rviz"]
