@@ -11,9 +11,9 @@ set -euo pipefail
 
 MODE="${1:-full}"
 
-RAW_PATTERN="${SUMMER_SCHOOL_RAW_BAG_PATTERN:-raw_notf/2026_03_25_15_24_28__event-near_points__0_ros1_chunk_*_notf.bag}"
+RAW_PATTERN="${SUMMER_SCHOOL_RAW_BAG_PATTERN:-raw/2026_03_25_15_24_28__event-near_points__0_ros1_chunk_*_notf.bag}"
 PRUNE_BAG="${SUMMER_SCHOOL_PRUNE_BAG:-semantic_pcl/prune_colored_rgb_no_gates_480p.bag}"
-SKY_MASK_BAG="${SUMMER_SCHOOL_SKY_MASK_BAG:-raw/sky_mask_event_near_points_480p.bag}"
+SKY_MASK_BAG="${SUMMER_SCHOOL_SKY_MASK_BAG:-segmented/2026_03_25_15_24_28__event-near_points__0_ros1_chunk_*_segmented.bag}"
 LOCALIZATION_BAG="${SUMMER_SCHOOL_LOCALIZATION_BAG:-localisation_tf_50hz.bag}"
 BAG_RATE="${SUMMER_SCHOOL_BAG_RATE:-1.0}"
 BAGS_DIR=/workspace/demo/bags

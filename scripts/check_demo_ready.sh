@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SUMMER_SCHOOL_RAW_BAG_PATTERN="${SUMMER_SCHOOL_RAW_BAG_PATTERN:-${SUMMER_SCHOOL_RAW_BAG:-${SUMMER_SCHOOL_BAG:-${DEMO_BAG:-raw_notf/2026_03_25_15_24_28__event-near_points__0_ros1_chunk_*_notf.bag}}}}"
+SUMMER_SCHOOL_RAW_BAG_PATTERN="${SUMMER_SCHOOL_RAW_BAG_PATTERN:-${SUMMER_SCHOOL_RAW_BAG:-${SUMMER_SCHOOL_BAG:-${DEMO_BAG:-raw/2026_03_25_15_24_28__event-near_points__0_ros1_chunk_*_notf.bag}}}}"
 SUMMER_SCHOOL_PRUNE_BAG="${SUMMER_SCHOOL_PRUNE_BAG:-${SUMMER_SCHOOL_BAG:-semantic_pcl/prune_colored_rgb_no_gates_480p.bag}}"
 SUMMER_SCHOOL_LOCALIZATION_BAG="${SUMMER_SCHOOL_LOCALIZATION_BAG:-localisation_tf_50hz.bag}"
 shopt -s nullglob

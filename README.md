@@ -21,7 +21,7 @@ Start with `run_mapping.sh` if you are unsure.
 ## 1. Get The Code
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/Forestry-Robotics-UC/summer_school_mapping_demo.git
 cd summer_school_mapping_demo
 ```
 
@@ -41,18 +41,18 @@ SUMMER_SCHOOL_DEMO_IMAGE=duda1202/fruc:forestsphere-summer-school-demo-noetic
 
 Download the dataset from KDrive:
 
-https://kdrive.infomaniak.com/app/collaborate/2981078/8ed3a25e-12bc-49dc-8e1b-b70e04fa80df
+([KDrive link](https://kdrive.infomaniak.com/app/share/2981078/bda42ab6-4737-4eb1-ba80-6a3279133425))
 
 Place the files inside the `bags/` folder so the layout looks like this:
 
 ```
 bags/
-  raw_notf/
+  raw/
     2026_03_25_15_24_28__event-near_points__0_ros1_chunk_000_notf.bag
     2026_03_25_15_24_28__event-near_points__0_ros1_chunk_001_notf.bag
-    ...
-  raw/
     sky_mask_event_near_points_480p.bag
+    ...
+  segmented/
   semantic_pcl/
     prune_colored_rgb_no_gates_480p.bag
   localisation_tf_50hz.bag
