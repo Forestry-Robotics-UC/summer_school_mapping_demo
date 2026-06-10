@@ -1,14 +1,15 @@
 # Local operator guidance
 AGENTS.md
+maintainer_notes.md
 
 # Demo datasets and generated outputs
-demo/bags/*.bag
-demo/bags/*.bag.active
-demo/bags/*.mcap
-demo/logs/*.mp4
-demo/logs/*.mkv
-demo/logs/*.log
-demo/logs/*.bag
+bags/*.bag
+bags/*.bag.active
+bags/*.mcap
+logs/*.mp4
+logs/*.mkv
+logs/*.log
+logs/*.bag
 
 # ROS/catkin temporary files
 .ros/

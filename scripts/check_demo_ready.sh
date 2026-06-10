@@ -1,20 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SUMMER_SCHOOL_RAW_BAG_PATTERN="${SUMMER_SCHOOL_RAW_BAG_PATTERN:-${SUMMER_SCHOOL_RAW_BAG:-${SUMMER_SCHOOL_BAG:-${DEMO_BAG:-raw/2026_03_25_15_24_28__event-near_points__0_ros1_chunk_*.bag}}}}"
-SUMMER_SCHOOL_PRUNE_BAG="${SUMMER_SCHOOL_PRUNE_BAG:-${SUMMER_SCHOOL_BAG:-semantic_pcl/prune_colored_event_near_points_480p.bag}}"
-SUMMER_SCHOOL_LOCALIZATION_BAG="${SUMMER_SCHOOL_LOCALIZATION_BAG:-localization/localisation_tf_50hz.bag}"
+SUMMER_SCHOOL_RAW_BAG_PATTERN="${SUMMER_SCHOOL_RAW_BAG_PATTERN:-${SUMMER_SCHOOL_RAW_BAG:-${SUMMER_SCHOOL_BAG:-${DEMO_BAG:-raw_notf/2026_03_25_15_24_28__event-near_points__0_ros1_chunk_*_notf.bag}}}}"
+SUMMER_SCHOOL_PRUNE_BAG="${SUMMER_SCHOOL_PRUNE_BAG:-${SUMMER_SCHOOL_BAG:-semantic_pcl/prune_colored_rgb_no_gates_480p.bag}}"
+SUMMER_SCHOOL_LOCALIZATION_BAG="${SUMMER_SCHOOL_LOCALIZATION_BAG:-localisation_tf_50hz.bag}"
 shopt -s nullglob
 RAW_BAG_PATHS=(/workspace/demo/bags/${SUMMER_SCHOOL_RAW_BAG_PATTERN})
 shopt -u nullglob
 PRUNE_BAG_PATH="/workspace/demo/bags/${SUMMER_SCHOOL_PRUNE_BAG}"
 LOCALIZATION_BAG_PATH="/workspace/demo/bags/${SUMMER_SCHOOL_LOCALIZATION_BAG}"
 
+SEMANTIC_TOPIC="${SUMMER_SCHOOL_PRUNE_SEMANTIC_TOPIC:-/camera/color/image_raw}"
+
 REQUIRED_TOPICS=(
   "/ouster/points"
   "/camera/color/image_raw"
   "/camera/color/camera_info"
-  "/semantic/mask"
+  "${SEMANTIC_TOPIC}"
 )
 
 OPTIONAL_TOPICS=(
@@ -24,12 +26,16 @@ OPTIONAL_TOPICS=(
 )
 
 REQUIRED_FILES=(
-  "/workspace/demo/calibration/example_static_tfs.yaml"
   "/workspace/demo/calibration/curt_mini_realsense_camera_info_480p.txt"
   "/workspace/demo/config/prune_demo.yaml"
   "/workspace/demo/config/mapper_demo.yaml"
   "/workspace/demo/config/rviz_demo.rviz"
 )
+
+STATIC_TFS_ENABLED="${SUMMER_SCHOOL_RUN_STATIC_TFS:-${RUN_STATIC_TFS:-true}}"
+if [[ "${STATIC_TFS_ENABLED}" == "true" ]]; then
+  REQUIRED_FILES+=("/workspace/demo/calibration/example_static_tfs.yaml")
+fi
 
 REQUIRED_PACKAGES=(
   "rosbag"
