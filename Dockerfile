@@ -7,6 +7,8 @@ FROM osrf/ros:noetic-desktop-full AS builder
 ARG DEBIAN_FRONTEND=noninteractive
 ARG UFOMAP_REPO_URL=https://github.com/UnknownFreeOccupied/ufomap.git
 ARG UFOMAP_REF=master
+ARG BONXAI_REPO_URL=https://github.com/facontidavide/Bonxai
+ARG BONXAI_REF=main
 
 SHELL ["/bin/bash", "-c"]
 
@@ -23,6 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-numpy \
     python3-opencv \
     python3-pip \
+    python3-pybind11 \
     python3-rosdep \
     python3-scipy \
     python3-yaml \
@@ -34,6 +37,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-noetic-rosbag \
     ros-noetic-tf \
     ros-noetic-tf2-ros \
+    ros-noetic-tf2-sensor-msgs \
     ros-noetic-xacro \
     && rm -rf /var/lib/apt/lists/*
 
@@ -44,10 +48,21 @@ COPY PRUNE src/prune
 COPY ENTFAC-Mapping src/entfac_mapping
 
 # UFOMapping — cloned from the public repo.
-# ufomap_ros contains an RViz plugin that fails to compile on Noetic; exclude it.
-# Only ufomap_mapping (the mapping server node) and ufomap_msgs are needed.
-RUN git clone --depth 1 --branch "${UFOMAP_REF}" "${UFOMAP_REPO_URL}" src/ufomap \
-    && touch src/ufomap/ufomap_ros/CATKIN_IGNORE
+# Keep ufomap_ros enabled so the RViz plugin is available in the demo image.
+RUN git clone --depth 1 --branch "${UFOMAP_REF}" "${UFOMAP_REPO_URL}" src/ufomap
+RUN python3 - <<'PY'
+from pathlib import Path
+
+path = Path("/workspace/catkin_ws/src/ufomap/ufomap_ros/ufomap_rviz_plugins/src/ufomap_display.cpp")
+text = path.read_text()
+text = text.replace(", nullptr, this);", ", []() {}, this);")
+path.write_text(text)
+PY
+
+# Bonxai headers — required to build the entfac_mapping_core._bonxai C extension.
+# Cloned into the location expected by entfac_mapping_core/CMakeLists.txt.
+RUN git clone --depth 1 --branch "${BONXAI_REF}" "${BONXAI_REPO_URL}" \
+    src/entfac_mapping/third_party/Bonxai
 
 RUN source /opt/ros/noetic/setup.bash \
     && catkin config --extend /opt/ros/noetic --install --cmake-args -DCMAKE_BUILD_TYPE=Release \
@@ -86,6 +101,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-noetic-rosbag \
     ros-noetic-tf \
     ros-noetic-tf2-ros \
+    ros-noetic-tf2-sensor-msgs \
     ros-noetic-topic-tools \
     ros-noetic-xacro \
     sudo \

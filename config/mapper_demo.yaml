@@ -1,15 +1,15 @@
-# Summer school live-demo parameter reference.
-# The current entfac_mapping_ros semantic_mapping.launch loads package configs by backend/site.
-# Use these values to update the package config or launch arguments before demo day.
+# Summer school live-demo parameter reference for the existing ENTFAC mapping flow.
+# The entfac_mapping_ros semantic_mapping.launch loads package configs by backend/site.
+# UFOMAP uses config/ufomap_demo.yaml and a direct ufomap_mapping_server_node launch.
 
 # Mapper input topic produced by PRUNE.
-pointcloud_topic: "/colored_pcl_node/semantic_pointcloud"
+pointcloud_topic: "/ouster/rgb_colored"
 
 # Mapper world frame used for TF lookup and map publication.
 world_frame: "map"
 
-# Backend selected for reliable live demos; switch to bonxai/octomap/ufomap only after image validation.
-backend: "dummy"
+# Valid ENTFAC backend for this reference config.
+backend: "bonxai"
 
 # Publish rate for the accumulated semantic map point cloud.
 publish_rate_hz: 2.0
@@ -31,8 +31,3 @@ layers:
     alpha_sum_max: 100.0
     # Semantic fusion rule used by the mapper.
     fusion_rule: "dirichlet"
-
-# Optional UFOMapping note:
-# If a UFOMapping ROS package is mounted under /workspace/catkin_ws/src/ufomap and built,
-# use its package launch directly or add an entfac_mapping_ros backend/launch wrapper.
-# This placeholder file does not invent a package name because UFOMAP package names differ by fork.

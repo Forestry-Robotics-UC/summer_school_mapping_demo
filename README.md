@@ -6,7 +6,7 @@ Live mapping demo for the ForestSphere summer school. Runs from recorded data in
 
 | Script | What it shows |
 |---|---|
-| `run_mapping.sh` | Prepared semantic map replayed from bags. Safest for presentations. |
+| `run_mapping.sh` | UFOMapping-backed map replayed from bags. Safest for presentations. |
 | `run_full_pipeline.sh` | Full live pipeline — raw bags → sky mask → PRUNE → mapping. |
 | `run_prune.sh` | ENTFAC-Sensor-Fusion / PRUNE stage only, with debug overlays. |
 
@@ -85,7 +85,12 @@ docker compose run --rm summer_school_demo_maintainer \
   /workspace/demo/scripts/run_mapping.sh
 ```
 
-RViz opens. The CurtMini robot model and semantic map appear. Replay starts automatically.
+RViz opens. The CurtMini robot model appears first. `Map` and `UFOMAP` start disabled, so turn on the one you want:
+
+- `Map` for the PRUNE-colored `/ouster/rgb_colored` cloud.
+- `UFOMAP` for the UFOMapping plugin view on `/ufomap_mapping_server_node/map`, fed by the same `/ouster/rgb_colored` stream.
+
+In a second terminal, run `/workspace/demo/scripts/replay_bag.sh mapping` to start the bag replay while RViz stays open.
 
 ### Full Pipeline
 
@@ -94,12 +99,16 @@ docker compose run --rm summer_school_demo_maintainer \
   /workspace/demo/scripts/run_full_pipeline.sh
 ```
 
+In a second terminal, run `/workspace/demo/scripts/replay_bag.sh full` to drive the raw bags while the stack stays open.
+
 ### PRUNE Only
 
 ```bash
 docker compose run --rm summer_school_demo_maintainer \
   /workspace/demo/scripts/run_prune.sh
 ```
+
+`run_prune.sh` opens the dedicated `rviz_prune_demo.rviz` preset with `Sky Mask`, `PRUNE Projection Debug`, and the PRUNE `/ouster/rgb_colored` cloud visible immediately.
 
 ## 7. Pause And Resume Bag Replay
 
@@ -131,7 +140,9 @@ docker compose run --rm summer_school_demo_maintainer \
 |---|---|
 | RViz does not open | Run `xhost +local:docker`; check `DISPLAY=` in `.env` matches `echo $DISPLAY` |
 | `no bags matched` error | Check that bags are inside `bags/` with the correct subfolder layout |
-| Map stays empty in mapping mode | `bags/semantic_pcl/prune_colored_rgb_no_gates_480p.bag` is missing |
+| Map stays empty in mapping mode | `bags/semantic_pcl/prune_colored_rgb_no_gates_480p.bag` is missing or does not contain `/ouster/rgb_colored` |
+| `UFOMAP` stays empty | Confirm the replay bag includes the PRUNE `/ouster/rgb_colored` topic |
+| `UFOMAP` does not appear in RViz | Rebuild the image so `ufomap_ros` stays enabled, then confirm the `UFOMAP` display is set to `/ufomap_mapping_server_node/map` |
 | PRUNE waits forever | Camera info file missing: `calibration/curt_mini_realsense_camera_info_480p.txt` |
 
 ## Demo-Day Checklist
@@ -141,7 +152,8 @@ docker compose run --rm summer_school_demo_maintainer \
 - [ ] `xhost +local:docker` done
 - [ ] `DISPLAY` in `.env` matches `echo $DISPLAY`
 - [ ] `check_demo_ready.sh` passes
-- [ ] `run_mapping.sh` opens RViz and the map is visible
+- [ ] `run_mapping.sh` opens RViz and the chosen map display is visible
+- [ ] `UFOMAP` is available in RViz when the image includes the plugin
 
 ---
 

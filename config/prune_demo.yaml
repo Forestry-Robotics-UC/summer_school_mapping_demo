@@ -57,10 +57,6 @@ projection_invalid_mask_value: 255
 # Dilation radius in pixels applied before sampling the invalid mask.
 projection_invalid_mask_dilate_px: 2
 
-# Apply Rz(180 deg) to incoming Ouster points before projection. Needed when the
-# projection lands in the correct FOV but yawed 180 deg (front/back swapped).
-compat_ouster_sensor_frame: false
-
 # Enable the invalid-mask gate in PRUNE's projector.
 use_invalid_mask: true
 

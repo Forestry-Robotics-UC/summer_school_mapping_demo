@@ -7,7 +7,7 @@ Panels:
         - /Global Options1
         - /TF1/Frames1
       Splitter Ratio: 0.5
-    Tree Height: 149
+    Tree Height: 925
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
@@ -249,18 +249,67 @@ Visualization Manager:
       Size (Pixels): 4
       Size (m): 0.05000000074505806
       Style: Points
-      Topic: /ouster/rgb_colored
+      Topic: /colored_pcl_node/semantic_pointcloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
     - Class: UFOMap
       Enabled: false
+      Information:
+        "# Inner Nodes": ""
+        "# Leaf Nodes": ""
+        Resolution: ""
+        Size: ""
+      Min. Depth: 0
       Name: UFOMAP
-      Topic: /ufomap_mapping_server_node/map
+      Occupancy Thresholds:
+        Free (%): 50
+        Occupied (%): 50
+      Queue size: 10
+      UFOMap Topic: ""
+      Use BBX:
+        BBX Frame: <Fixed Frame>
+        Maximum:
+          X: 1000
+          Y: 1000
+          Z: 1000
+        Minimum:
+          X: -1000
+          Y: -1000
+          Z: -1000
+        Value: false
       Value: false
+      Voxel Rendering:
+        Free:
+          Alpha: 0.029999999329447746
+          Coloring:
+            Color: 0; 255; 0
+            Factor: 0.800000011920929
+            Value: Fixed
+          Scale: 1
+          Style: Flat Squares
+          Value: false
+        Occupied:
+          Alpha: 1
+          Coloring:
+            Color: 0; 0; 255
+            Factor: 0.800000011920929
+            Value: Voxel Color
+          Scale: 1
+          Style: Flat Squares
+          Value: true
+        Unknown:
+          Alpha: 0.029999999329447746
+          Coloring:
+            Color: 255; 255; 255
+            Factor: 0.800000011920929
+            Value: Fixed
+          Scale: 1
+          Style: Flat Squares
+          Value: false
     - Class: rviz/Image
-      Enabled: false
+      Enabled: true
       Image Topic: /camera/color/image_raw
       Max Value: 1
       Median window: 5
@@ -270,7 +319,7 @@ Visualization Manager:
       Queue Size: 2
       Transport Hint: raw
       Unreliable: false
-      Value: false
+      Value: true
     - Class: rviz/Image
       Enabled: false
       Image Topic: /semantic/mask
@@ -284,7 +333,7 @@ Visualization Manager:
       Unreliable: false
       Value: false
     - Class: rviz/Image
-      Enabled: true
+      Enabled: false
       Image Topic: /debug/lidar_projection
       Max Value: 1
       Median window: 5
@@ -294,7 +343,7 @@ Visualization Manager:
       Queue Size: 2
       Transport Hint: raw
       Unreliable: false
-      Value: true
+      Value: false
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
@@ -316,9 +365,37 @@ Visualization Manager:
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.009999999776482582
+      Size (m): 0.004999999888241291
       Style: Flat Squares
       Topic: /ouster/points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PRUNE
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.05000000074505806
+      Style: Flat Squares
+      Topic: /ouster/rgb_colored
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -339,7 +416,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 2.6354777812957764
+      Distance: 11.240206718444824
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -355,27 +432,27 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.15479618310928345
+      Pitch: 0.014796163886785507
       Target Frame: <Fixed Frame>
-      Yaw: 3.4185826778411865
+      Yaw: 3.133582353591919
     Saved: ~
 Window Geometry:
   Camera Image:
     collapsed: false
   Displays:
     collapsed: false
-  Height: 1043
+  Height: 1531
   Hide Left Dock: false
   Hide Right Dock: false
   PRUNE Projection Debug:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000300000000000002ac00000380fc0200000004fb000000100053006b00790020004d00610073006b000000003b000000410000001600fffffffb0000001800430061006d00650072006100200049006d006100670065000000003b000000e40000001600fffffffb0000002c005000520055004e0045002000500072006f006a0065006300740069006f006e002000440065006200750067010000003b000002640000001600fffffffb000000100044006900730070006c00610079007301000002a500000116000000c700ffffff000000010000013b00000568fc0200000001fb0000000a00560069006500770073000000003b00000568000000a000ffffff000000030000078000000037fc0100000001fb0000000800540069006d00650100000000000007800000030700ffffff000004ce0000038000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000300000000000002ac00000568fc0200000007fb000000100053006b00790020004d00610073006b000000003b000000410000001600fffffffb0000001800430061006d00650072006100200049006d006100670065010000003b000001440000001600fffffffb0000002c005000520055004e0045002000500072006f006a0065006300740069006f006e0020004400650062007500670000000125000001930000001600fffffffb000000100044006900730070006c00610079007301000001850000041e000000c700fffffffb0000002c005000520055004e0045002000500072006f006a0065006300740069006f006e0020004400650062007500670100000424000000dc0000000000000000fb0000001800430061006d00650072006100200049006d0061006700650000000453000000a50000000000000000fb000000100053006b00790020004d00610073006b01000005060000009d0000000000000000000000010000013b00000568fc0200000001fb0000000a00560069006500770073000000003b00000568000000a000ffffff00000003000009be00000037fc0100000001fb0000000800540069006d00650100000000000009be0000030700ffffff0000070c0000056800000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Sky Mask:
     collapsed: false
   Time:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1920
-  X: 2560
-  Y: 0
+  Width: 2494
+  X: 1986
+  Y: 32

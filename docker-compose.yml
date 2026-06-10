@@ -13,6 +13,8 @@ services:
     #     USER_GID: ${SUMMER_SCHOOL_DEMO_GID:-1000}
     #     UFOMAP_REPO_URL: ${UFOMAP_REPO_URL:-https://github.com/UnknownFreeOccupied/ufomap.git}
     #     UFOMAP_REF: ${UFOMAP_REF:-master}
+    #     BONXAI_REPO_URL: ${BONXAI_REPO_URL:-https://github.com/facontidavide/Bonxai}
+    #     BONXAI_REF: ${BONXAI_REF:-main}
     container_name: forestsphere_summer_school_demo_maintainer
     network_mode: host
     stdin_open: true

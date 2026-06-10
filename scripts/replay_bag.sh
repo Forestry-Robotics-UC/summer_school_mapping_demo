@@ -6,8 +6,9 @@ set -euo pipefail
 # stack started in the other terminal via the shared host-network roscore.
 #
 # Usage: replay_bag.sh [full|prune|mapping] [extra rosbag play args...]
-#   full | prune : raw chunks + sky-mask + localization
-#   mapping      : raw chunks + precomputed PRUNE cloud + localization
+#   full   : raw chunks + sky-mask + localization
+#   prune  : raw chunks + sky-mask + localization + precomputed PRUNE rgb_colored bag
+#   mapping: raw chunks + precomputed PRUNE rgb_colored bag + localization
 
 MODE="${1:-full}"
 
@@ -39,7 +40,11 @@ add_match() {
 add_match "${RAW_PATTERN}"
 add_match "${LOCALIZATION_BAG}"
 case "${MODE}" in
-  full|prune) add_match "${SKY_MASK_BAG}" ;;
+  full) add_match "${SKY_MASK_BAG}" ;;
+  prune)
+    add_match "${SKY_MASK_BAG}"
+    add_match "${PRUNE_BAG}"
+    ;;
   mapping)    add_match "${PRUNE_BAG}" ;;
   *) echo "[replay_bag] unknown mode '${MODE}' (use full|prune|mapping)" >&2; exit 1 ;;
 esac

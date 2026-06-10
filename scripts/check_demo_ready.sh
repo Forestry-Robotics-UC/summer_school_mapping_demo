@@ -29,7 +29,9 @@ REQUIRED_FILES=(
   "/workspace/demo/calibration/curt_mini_realsense_camera_info_480p.txt"
   "/workspace/demo/config/prune_demo.yaml"
   "/workspace/demo/config/mapper_demo.yaml"
+  "/workspace/demo/config/ufomap_demo.yaml"
   "/workspace/demo/config/rviz_demo.rviz"
+  "/workspace/demo/config/rviz_prune_demo.rviz"
 )
 
 STATIC_TFS_ENABLED="${SUMMER_SCHOOL_RUN_STATIC_TFS:-${RUN_STATIC_TFS:-true}}"
@@ -49,8 +51,14 @@ REQUIRED_PACKAGES=(
 OPTIONAL_PACKAGES=(
   "entfac_mapping_ros"
   "ufomap_ros"
-  "ufomap_mapping"
 )
+
+MAPPER_BACKEND="${SUMMER_SCHOOL_MAPPER_BACKEND:-${MAPPER_BACKEND:-ufomap}}"
+if [[ "${MAPPER_BACKEND}" == "ufomap" ]]; then
+  REQUIRED_PACKAGES+=("ufomap_mapping")
+else
+  OPTIONAL_PACKAGES+=("ufomap_mapping")
+fi
 
 fail() {
   echo "ERROR: $*" >&2
@@ -62,7 +70,9 @@ warn() {
 }
 
 source /opt/ros/noetic/setup.bash
-if [[ -f /workspace/catkin_ws/devel/setup.bash ]]; then
+if [[ -f /workspace/catkin_ws/install/setup.bash ]]; then
+  source /workspace/catkin_ws/install/setup.bash
+elif [[ -f /workspace/catkin_ws/devel/setup.bash ]]; then
   source /workspace/catkin_ws/devel/setup.bash
 fi
 
@@ -94,6 +104,13 @@ for topic in "${REQUIRED_TOPICS[@]}"; do
     fail "Required bag topic missing: ${topic}"
   fi
 done
+
+echo "[check] prune bag info"
+rosbag info "${PRUNE_BAG_PATH}" >/tmp/demo_prune_bag_info.txt
+cat /tmp/demo_prune_bag_info.txt
+if ! grep -Eq "^[[:space:]]*/ouster/rgb_colored[[:space:]]" /tmp/demo_prune_bag_info.txt; then
+  fail "PRUNE bag missing required topic: /ouster/rgb_colored"
+fi
 
 for topic in "${OPTIONAL_TOPICS[@]}"; do
   if ! grep -Eq "^[[:space:]]*${topic//\//\\/}[[:space:]]" /tmp/demo_rosbag_info.txt; then

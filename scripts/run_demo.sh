@@ -3,7 +3,9 @@ set -euo pipefail
 
 PRUNE_CONFIG="/workspace/demo/config/prune_demo.yaml"
 MAPPER_CONFIG="/workspace/demo/config/mapper_demo.yaml"
+UFOMAP_CONFIG="/workspace/demo/config/ufomap_demo.yaml"
 RVIZ_CONFIG="/workspace/demo/config/rviz_demo.rviz"
+RVIZ_PROFILE="${SUMMER_SCHOOL_RVIZ_PROFILE:-${RVIZ_PROFILE:-mapping}}"
 STATIC_TFS_FILE="${STATIC_TFS_FILE:-/workspace/demo/calibration/example_static_tfs.yaml}"
 CURTMINI_URDF="${SUMMER_SCHOOL_CURTMINI_URDF:-${CURTMINI_URDF:-/workspace/catkin_ws/src/entfac_mapping/entfac_mapping_ros/urdf/curtmini/robot.urdf.xacro}}"
 RUN_CURTMINI_URDF="${SUMMER_SCHOOL_RUN_CURTMINI_URDF:-${RUN_CURTMINI_URDF:-true}}"
@@ -16,6 +18,7 @@ PRUNE_CAMERA_INFO_TOPIC="${SUMMER_SCHOOL_PRUNE_CAMERA_INFO_TOPIC:-${PRUNE_CAMERA
 PRUNE_DEPTH_INPUT_TOPIC="${SUMMER_SCHOOL_PRUNE_DEPTH_INPUT_TOPIC:-${PRUNE_DEPTH_INPUT_TOPIC:-/ouster/points}}"
 PRUNE_OUTPUT_TOPIC="${SUMMER_SCHOOL_PRUNE_OUTPUT_TOPIC:-${PRUNE_OUTPUT_TOPIC:-/colored_pcl_node/semantic_pointcloud}}"
 PRUNE_TARGET_FRAME="${SUMMER_SCHOOL_PRUNE_TARGET_FRAME:-${PRUNE_TARGET_FRAME:-base_link}}"
+UFOMAP_INPUT_TOPIC="${SUMMER_SCHOOL_UFOMAP_INPUT_TOPIC:-${UFOMAP_INPUT_TOPIC:-/ouster/rgb_colored}}"
 PRUNE_PROJECTION_INVALID_MASK_TOPIC="${SUMMER_SCHOOL_PRUNE_PROJECTION_INVALID_MASK_TOPIC:-${PRUNE_PROJECTION_INVALID_MASK_TOPIC:-/semantic/mask}}"
 PRUNE_PROJECTION_INVALID_MASK_VALUE="${SUMMER_SCHOOL_PRUNE_PROJECTION_INVALID_MASK_VALUE:-${PRUNE_PROJECTION_INVALID_MASK_VALUE:-255}}"
 PRUNE_PROJECTION_INVALID_MASK_DILATE_PX="${SUMMER_SCHOOL_PRUNE_PROJECTION_INVALID_MASK_DILATE_PX:-${PRUNE_PROJECTION_INVALID_MASK_DILATE_PX:-1}}"
@@ -35,7 +38,7 @@ PRUNE_OVERLAY_OUTPUT_DIR="${SUMMER_SCHOOL_PRUNE_OVERLAY_OUTPUT_DIR:-${PRUNE_OVER
 PRUNE_OVERLAY_OUTPUT_STRIDE="${SUMMER_SCHOOL_PRUNE_OVERLAY_OUTPUT_STRIDE:-${PRUNE_OVERLAY_OUTPUT_STRIDE:-1}}"
 PRUNE_OVERLAY_DOT_RADIUS="${SUMMER_SCHOOL_PRUNE_OVERLAY_DOT_RADIUS:-${PRUNE_OVERLAY_DOT_RADIUS:-2}}"
 
-MAPPER_BACKEND="${SUMMER_SCHOOL_MAPPER_BACKEND:-${MAPPER_BACKEND:-dummy}}"
+MAPPER_BACKEND="${SUMMER_SCHOOL_MAPPER_BACKEND:-${MAPPER_BACKEND:-ufomap}}"
 MAPPER_SITE="${SUMMER_SCHOOL_MAPPER_SITE:-${MAPPER_SITE:-forest}}"
 MAPPER_WORLD_FRAME="${SUMMER_SCHOOL_MAPPER_WORLD_FRAME:-${MAPPER_WORLD_FRAME:-map}}"
 RUN_MAPPER="${SUMMER_SCHOOL_RUN_MAPPER:-${RUN_MAPPER:-true}}"
@@ -66,7 +69,9 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 source /opt/ros/noetic/setup.bash
-if [[ -f /workspace/catkin_ws/devel/setup.bash ]]; then
+if [[ -f /workspace/catkin_ws/install/setup.bash ]]; then
+  source /workspace/catkin_ws/install/setup.bash
+elif [[ -f /workspace/catkin_ws/devel/setup.bash ]]; then
   source /workspace/catkin_ws/devel/setup.bash
 fi
 
@@ -214,7 +219,17 @@ else
 fi
 
 if [[ "${RUN_MAPPER}" == "true" ]]; then
-  if rospack find entfac_mapping_ros >/dev/null 2>&1; then
+  if [[ "${MAPPER_BACKEND}" == "ufomap" ]]; then
+    if ! rospack find ufomap_mapping >/dev/null 2>&1; then
+      echo "[run_demo] WARN: ufomap_mapping not found; UFOMAP stage skipped"
+    else
+      echo "[run_demo] starting UFOMAP mapping server; reference config=${UFOMAP_CONFIG}"
+      rosparam load "${UFOMAP_CONFIG}" /ufomap_mapping_server_node
+      start_background rosrun ufomap_mapping ufomap_mapping_server_node \
+        __name:=ufomap_mapping_server_node \
+        cloud_in:="${UFOMAP_INPUT_TOPIC}"
+    fi
+  elif rospack find entfac_mapping_ros >/dev/null 2>&1; then
     echo "[run_demo] starting mapper with backend=${MAPPER_BACKEND}; reference config=${MAPPER_CONFIG}"
     start_background roslaunch entfac_mapping_ros semantic_mapping.launch \
       backend:="${MAPPER_BACKEND}" \
@@ -232,8 +247,12 @@ if [[ "${RUN_RQT_RECONFIGURE}" == "true" ]]; then
 fi
 
 if [[ "${RUN_RVIZ}" == "true" ]]; then
+  RVIZ_RUNTIME_CONFIG="${RVIZ_CONFIG}"
+  if [[ "${RVIZ_PROFILE}" == "prune" ]]; then
+    RVIZ_RUNTIME_CONFIG="/workspace/demo/config/rviz_prune_demo.rviz"
+  fi
   echo "[run_demo] starting RViz"
-  start_background rviz -d "${RVIZ_CONFIG}"
+  start_background rviz -d "${RVIZ_RUNTIME_CONFIG}"
 fi
 
 REPLAY_BAGS=()

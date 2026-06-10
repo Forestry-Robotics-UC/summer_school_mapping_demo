@@ -26,17 +26,19 @@ assert_file "${SCRIPTS_DIR}/run_prune.sh"
 
 assert_contains "${SCRIPTS_DIR}/run_mapping.sh" 'SUMMER_SCHOOL_RUN_PRUNE=false'
 assert_contains "${SCRIPTS_DIR}/run_mapping.sh" 'SUMMER_SCHOOL_RUN_MAPPER=true'
-assert_contains "${SCRIPTS_DIR}/run_mapping.sh" 'SUMMER_SCHOOL_RUN_REPLAY_PRUNE=true'
-assert_contains "${SCRIPTS_DIR}/run_mapping.sh" 'SUMMER_SCHOOL_RUN_REPLAY_RAW=true'
+assert_contains "${SCRIPTS_DIR}/run_mapping.sh" 'SUMMER_SCHOOL_RUN_REPLAY_PRUNE=false'
+assert_contains "${SCRIPTS_DIR}/run_mapping.sh" 'SUMMER_SCHOOL_RUN_REPLAY_RAW=false'
+assert_contains "${SCRIPTS_DIR}/run_mapping.sh" 'SUMMER_SCHOOL_MAPPER_BACKEND=ufomap'
 
 assert_contains "${SCRIPTS_DIR}/run_full_pipeline.sh" 'SUMMER_SCHOOL_RUN_PRUNE=true'
 assert_contains "${SCRIPTS_DIR}/run_full_pipeline.sh" 'SUMMER_SCHOOL_RUN_MAPPER=true'
-assert_contains "${SCRIPTS_DIR}/run_full_pipeline.sh" 'SUMMER_SCHOOL_RUN_REPLAY_SKY_MASK=true'
-assert_contains "${SCRIPTS_DIR}/run_full_pipeline.sh" 'SUMMER_SCHOOL_RUN_REPLAY_LOCALIZATION=true'
+assert_contains "${SCRIPTS_DIR}/run_full_pipeline.sh" 'SUMMER_SCHOOL_RUN_REPLAY_SKY_MASK=false'
+assert_contains "${SCRIPTS_DIR}/run_full_pipeline.sh" 'SUMMER_SCHOOL_RUN_REPLAY_LOCALIZATION=false'
 
 assert_contains "${SCRIPTS_DIR}/run_prune.sh" 'SUMMER_SCHOOL_RUN_PRUNE=true'
 assert_contains "${SCRIPTS_DIR}/run_prune.sh" 'SUMMER_SCHOOL_RUN_MAPPER=false'
 assert_contains "${SCRIPTS_DIR}/run_prune.sh" 'SUMMER_SCHOOL_RUN_RQT_RECONFIGURE=true'
+assert_contains "${SCRIPTS_DIR}/run_prune.sh" 'SUMMER_SCHOOL_RVIZ_PROFILE=prune'
 assert_contains "${SCRIPTS_DIR}/run_prune.sh" 'SUMMER_SCHOOL_PRUNE_DEBUG_PROJECT_LIDAR=true'
 assert_contains "${SCRIPTS_DIR}/run_prune.sh" 'SUMMER_SCHOOL_PRUNE_OVERLAY_OUTPUT_DIR=/workspace/demo/logs/overlays'
 
