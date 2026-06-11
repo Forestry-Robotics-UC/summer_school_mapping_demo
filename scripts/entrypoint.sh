@@ -22,9 +22,6 @@ Useful commands:
   /workspace/demo/scripts/run_full_pipeline.sh
   /workspace/demo/scripts/run_prune.sh
   /workspace/demo/scripts/replay_bag.sh
-
-Build workspace if needed:
-  cd /workspace/catkin_ws && catkin build
 EOF
 
 exec "$@"

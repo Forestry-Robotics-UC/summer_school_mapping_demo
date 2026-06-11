@@ -1,27 +1,24 @@
 services:
-  summer_school_demo_maintainer:
-    # Pre-built public image — students pull this, no build required.
-    # Update this tag after pushing to the registry.
+  summer_school_demo:
     image: ${SUMMER_SCHOOL_DEMO_IMAGE:-forestsphere-summer-school-demo:noetic}
-    # Maintainers only: uncomment to rebuild from source.
-    # build:
-    #   context: ../..
-    #   dockerfile: summer_school_mapping_demo/Dockerfile
-    #   args:
-    #     USERNAME: ${SUMMER_SCHOOL_DEMO_USER:-demo}
-    #     USER_UID: ${SUMMER_SCHOOL_DEMO_UID:-1000}
-    #     USER_GID: ${SUMMER_SCHOOL_DEMO_GID:-1000}
-    #     UFOMAP_REPO_URL: ${UFOMAP_REPO_URL:-https://github.com/UnknownFreeOccupied/ufomap.git}
-    #     UFOMAP_REF: ${UFOMAP_REF:-master}
-    #     BONXAI_REPO_URL: ${BONXAI_REPO_URL:-https://github.com/facontidavide/Bonxai}
-    #     BONXAI_REF: ${BONXAI_REF:-main}
-    container_name: forestsphere_summer_school_demo_maintainer
+    build:
+      context: ..
+      dockerfile: summer_school_mapping_demo/Dockerfile
+      args:
+        USERNAME: ${SUMMER_SCHOOL_DEMO_USER:-demo}
+        USER_UID: ${SUMMER_SCHOOL_DEMO_UID:-1000}
+        USER_GID: ${SUMMER_SCHOOL_DEMO_GID:-1000}
+        UFOMAP_REPO_URL: ${UFOMAP_REPO_URL:-https://github.com/UnknownFreeOccupied/ufomap.git}
+        UFOMAP_REF: ${UFOMAP_REF:-master}
+    container_name: forestsphere_summer_school_demo
     network_mode: host
     stdin_open: true
     tty: true
     working_dir: /workspace/demo
     env_file:
       - .env
+    devices:
+      - /dev/dri:/dev/dri
     volumes:
       # Bags: drop dataset files into the bags/ folder next to docker-compose.yml.
       # Override SUMMER_SCHOOL_DATASET_DIR in .env if bags are stored elsewhere.
@@ -32,27 +29,3 @@ services:
       - ./scripts:/workspace/demo/scripts:ro
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
     command: ["/bin/bash"]
-
-  summer_school_demo_gui:
-    image: ${SUMMER_SCHOOL_DEMO_IMAGE:-forestsphere-summer-school-demo:noetic}
-    # build:
-    #   context: ../..
-    #   dockerfile: summer_school_mapping_demo/Dockerfile
-    #   args:
-    #     USERNAME: ${SUMMER_SCHOOL_DEMO_USER:-demo}
-    #     USER_UID: ${SUMMER_SCHOOL_DEMO_UID:-1000}
-    #     USER_GID: ${SUMMER_SCHOOL_DEMO_GID:-1000}
-    container_name: forestsphere_summer_school_demo_gui
-    network_mode: host
-    stdin_open: true
-    tty: true
-    working_dir: /workspace/demo
-    env_file:
-      - .env
-    volumes:
-      - ${SUMMER_SCHOOL_DATASET_DIR:-./bags}:/workspace/demo/bags:ro
-      - ./calibration:/workspace/demo/calibration:ro
-      - ./config:/workspace/demo/config:ro
-      - ./logs:/workspace/demo/logs:rw
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw
-    command: ["rviz", "-d", "/workspace/demo/config/rviz_demo.rviz"]

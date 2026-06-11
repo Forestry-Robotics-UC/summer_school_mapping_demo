@@ -48,8 +48,8 @@ include_unlabeled: false
 # Maximum LiDAR transfer range in meters for the live forest replay.
 max_depth_m: 30
 
-# Invalid-mask gate topic. Same image as semantic_topic in this binary sky-mask demo.
-projection_invalid_mask_topic: "/semantic/mask"
+# Invalid-mask gate topic. Topic published by the segmented bags.
+projection_invalid_mask_topic: "/entfac/perception/sky_invalid_mask"
 
 # Pixel value in projection_invalid_mask_topic that means invalid/sky.
 projection_invalid_mask_value: 255
@@ -58,7 +58,15 @@ projection_invalid_mask_value: 255
 projection_invalid_mask_dilate_px: 2
 
 # Enable the invalid-mask gate in PRUNE's projector.
-use_invalid_mask: true
+# Set to false when no sky-mask bag is available; PRUNE will run on raw bags only.
+use_invalid_mask: false
+
+# Undistort semantic images using CameraInfo distortion coefficients before projection.
+undistort_semantic: false
+
+# LiDAR motion deskew using per-point timestamps + IMU (rotation-only mode).
+lidar_deskew_enable: true
+lidar_deskew_mode: "rotation"
 
 # Enable LiDAR depth-edge rejection evidence and runtime gate.
 use_depth_edge_rejection: true
@@ -83,10 +91,13 @@ projection_occlusion_epsilon_m: 0.20
 projection_occlusion_radius_px: 1
 
 # Disable high-volume debug overlays during the controlled live demo.
-debug_project_lidar: true
+debug_project_lidar: false
+
+# Enable debug logging (status table, LiDAR PCL bbox, TF cache hits).
+debug: false
 
 # Print a compact runtime status table during the demo.
-status_period: 2.0
+status_period: 5.0
 
 # Write PLY snapshots under the mounted demo logs folder when services are called.
 ply_output_dir: "/workspace/demo/logs/ply"

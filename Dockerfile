@@ -1,5 +1,5 @@
 # ============================================================
-# Build stage — compiles private packages (PRUNE, ENTFAC-Mapping).
+# Build stage — compiles private packages (PRUNE) plus UFOMAP.
 # Source never reaches the runtime image.
 # ============================================================
 FROM osrf/ros:noetic-desktop-full AS builder
@@ -7,9 +7,6 @@ FROM osrf/ros:noetic-desktop-full AS builder
 ARG DEBIAN_FRONTEND=noninteractive
 ARG UFOMAP_REPO_URL=https://github.com/UnknownFreeOccupied/ufomap.git
 ARG UFOMAP_REF=master
-ARG BONXAI_REPO_URL=https://github.com/facontidavide/Bonxai
-ARG BONXAI_REF=main
-
 SHELL ["/bin/bash", "-c"]
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -45,7 +42,6 @@ WORKDIR /workspace/catkin_ws
 
 # Private packages — source stays in this layer only
 COPY PRUNE src/prune
-COPY ENTFAC-Mapping src/entfac_mapping
 
 # UFOMapping — cloned from the public repo.
 # Keep ufomap_ros enabled so the RViz plugin is available in the demo image.
@@ -58,11 +54,6 @@ text = path.read_text()
 text = text.replace(", nullptr, this);", ", []() {}, this);")
 path.write_text(text)
 PY
-
-# Bonxai headers — required to build the entfac_mapping_core._bonxai C extension.
-# Cloned into the location expected by entfac_mapping_core/CMakeLists.txt.
-RUN git clone --depth 1 --branch "${BONXAI_REF}" "${BONXAI_REPO_URL}" \
-    src/entfac_mapping/third_party/Bonxai
 
 RUN source /opt/ros/noetic/setup.bash \
     && catkin config --extend /opt/ros/noetic --install --cmake-args -DCMAKE_BUILD_TYPE=Release \

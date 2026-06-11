@@ -1,0 +1,403 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 70
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /UFOMap1/Information1
+        - /UFOMap1/Voxel Rendering1
+      Splitter Ratio: 0.5
+    Tree Height: 373
+  - Class: rviz/Time
+    Name: Time
+    SyncMode: 0
+    SyncSource: Image
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+Preferences:
+  PromptSaveOnExit: true
+Toolbars:
+  toolButtonStyle: 2
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 160; 160; 164
+      Enabled: false
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 50
+      Reference Frame: map
+      Value: false
+    - Class: rviz/TF
+      Enabled: true
+      Filter (blacklist): ""
+      Filter (whitelist): ""
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+        back_left_wheel:
+          Value: true
+        back_right_wheel:
+          Value: true
+        base_link:
+          Value: true
+        base_visual:
+          Value: true
+        camera_color_optical_frame:
+          Value: true
+        camera_link:
+          Value: true
+        cameras_tower_visual:
+          Value: true
+        chassis:
+          Value: true
+        front_left_wheel:
+          Value: true
+        front_right_wheel:
+          Value: true
+        gps:
+          Value: true
+        imu_link:
+          Value: true
+        mag:
+          Value: true
+        map:
+          Value: true
+        mapir3_optical_frame:
+          Value: true
+        os_imu:
+          Value: true
+        os_lidar:
+          Value: true
+        os_sensor:
+          Value: true
+        ouster_tower_visual:
+          Value: true
+      Marker Alpha: 1
+      Marker Scale: 0.20000000298023224
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        map:
+          base_link:
+            base_visual:
+              back_left_wheel:
+                {}
+              back_right_wheel:
+                {}
+              chassis:
+                {}
+              front_left_wheel:
+                {}
+              front_right_wheel:
+                {}
+            camera_link:
+              {}
+            cameras_tower_visual:
+              {}
+            gps:
+              {}
+            imu_link:
+              {}
+            mag:
+              {}
+            os_sensor:
+              os_imu:
+                {}
+              os_lidar:
+                camera_color_optical_frame:
+                  {}
+                mapir3_optical_frame:
+                  {}
+            ouster_tower_visual:
+              {}
+      Update Interval: 0
+      Value: true
+    - Alpha: 1
+      Class: rviz/RobotModel
+      Collision Enabled: false
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+        back_left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        back_right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        base_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        base_visual:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        camera_color_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        camera_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        cameras_tower_visual:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        chassis:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_left_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        front_right_wheel:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        gps:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        imu_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        mag:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        mapir3_optical_frame:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        os_imu:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        os_lidar:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        os_sensor:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        ouster_tower_visual:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+      Name: CurtMini Robot
+      Robot Description: robot_description
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: rgb
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PRUNE Cloud (input)
+      Position Transformer: XYZ
+      Queue Size: 5
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.05000000074505806
+      Style: Points
+      Topic: /ouster/rgb_colored
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: false
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: rgb
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: RGB8
+      Decay Time: 0
+      Enabled: false
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: Ouster Raw
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 4
+      Size (m): 0.10000000149011612
+      Style: Points
+      Topic: /ouster/points
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: false
+      Value: false
+    - Class: UFOMap
+      Enabled: true
+      Information:
+        "# Inner Nodes": 1,635,841
+        "# Leaf Nodes": 6,358,824
+        Resolution: 10 cm
+        Size: 85.96 MiB
+      Min. Depth: 0
+      Name: UFOMap
+      Occupancy Thresholds:
+        Free (%): 50
+        Occupied (%): 50
+      Queue size: 10
+      UFOMap Topic: /ufomap_mapping_server_node/map
+      Use BBX:
+        BBX Frame: <Fixed Frame>
+        Maximum:
+          X: 1000
+          Y: 1000
+          Z: 1000
+        Minimum:
+          X: -1000
+          Y: -1000
+          Z: -1000
+        Value: false
+      Value: true
+      Voxel Rendering:
+        Free:
+          Alpha: 0.029999999329447746
+          Coloring:
+            Color: 0; 255; 0
+            Factor: 0.800000011920929
+            Value: Fixed
+          Scale: 1
+          Style: Flat Squares
+          Value: false
+        Occupied:
+          Alpha: 1
+          Coloring:
+            Color: 0; 0; 255
+            Factor: 0.800000011920929
+            Value: Voxel Color
+          Scale: 1
+          Style: Flat Squares
+          Value: true
+        Unknown:
+          Alpha: 0.029999999329447746
+          Coloring:
+            Color: 255; 255; 255
+            Factor: 0.800000011920929
+            Value: Fixed
+          Scale: 1
+          Style: Flat Squares
+          Value: false
+    - Class: rviz/Image
+      Enabled: true
+      Image Topic: /camera/color/image_raw
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: Image
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
+      Unreliable: false
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Default Light: true
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+  Value: true
+  Views:
+    Current:
+      Class: rviz/ThirdPersonFollower
+      Distance: 110.01554107666016
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Field of View: 0.7853981852531433
+      Focal Point:
+        X: -29.72276496887207
+        Y: -8.947347640991211
+        Z: 5.772328222519718e-06
+      Focal Shape Fixed Size: false
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.7253981828689575
+      Target Frame: base_link
+      Yaw: 3.1303977966308594
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 1043
+  Hide Left Dock: false
+  Hide Right Dock: true
+  Image:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd00000002000000000000030700000380fc0200000003fb000000100044006900730070006c006100790073000000003b000002b1000000c700fffffffb0000000a00560069006500770073000000003b0000015c000000a000fffffffb0000000a0049006d006100670065010000003b000003800000001600ffffff000000030000078000000037fc0100000001fb0000000800540069006d00650100000000000007800000030700ffffff000004730000038000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Time:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1920
+  X: 1920
+  Y: 0

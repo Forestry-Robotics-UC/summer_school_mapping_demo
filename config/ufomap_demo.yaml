@@ -4,18 +4,18 @@
 
 # World frame used for the published map and TF lookups.
 frame_id: "map"
-
+resolution: 0.1
 # Robot/base frame used for sensor-origin carving and clearing.
 robot_frame_id: "base_link"
 
 # Maximum ray length in metres. -1 disables truncation.
-max_range: -1.0
+max_range: 50.0
 
 # Insert depth for the semantic integration tree.
 insert_depth: 0
 
 # Use the fast ray-casting path when possible.
-simple_ray_casting: false
+simple_ray_casting: true
 
 # Stop ray integration early once the target voxel is reached.
 early_stopping: 0
@@ -40,21 +40,24 @@ compress: false
 update_part_of_map: true
 
 # Disable background update loops; the bag replay drives the cadence.
-update_rate: 0.0
+update_rate: 4.0
+
+# Enable voxel color accumulation from PointCloud2 rgb fields.
+color_map: true
 
 # Publish a depth-limited map view for the RViz plugin.
-publish_depth: 4
+publish_depth: 0
 
 # Bayesian update parameters.
-prob_hit: 0.70
-prob_miss: 0.40
+prob_hit: 0.9
+prob_miss: 0.35
 
 # Occupancy clamping bounds.
 clamping_thres_min: 0.1192
 clamping_thres_max: 0.971
 
 # Map publication rate in Hz.
-pub_rate: 0.0
+pub_rate: 5.0
 
 # TF wait timeout in seconds.
 transform_timeout: 0.1
@@ -64,10 +67,10 @@ map_queue_size: 10
 cloud_in_queue_size: 10
 
 # Keep the last published map alive for RViz subscribers.
-map_latch: false
+map_latch: true
 
 # Reduce log noise in the demo container.
 verbose: false
 
 # Worker threads used by the node spinner.
-num_workers: 1
+num_workers: 6
