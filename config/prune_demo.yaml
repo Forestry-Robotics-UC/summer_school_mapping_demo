@@ -59,10 +59,10 @@ projection_invalid_mask_dilate_px: 2
 
 # Enable the invalid-mask gate in PRUNE's projector.
 # Set to false when no sky-mask bag is available; PRUNE will run on raw bags only.
-use_invalid_mask: false
+use_invalid_mask: true
 
 # Undistort semantic images using CameraInfo distortion coefficients before projection.
-undistort_semantic: false
+undistort_semantic: true
 
 # LiDAR motion deskew using per-point timestamps + IMU (rotation-only mode).
 lidar_deskew_enable: true
@@ -91,7 +91,7 @@ projection_occlusion_epsilon_m: 0.20
 projection_occlusion_radius_px: 1
 
 # Disable high-volume debug overlays during the controlled live demo.
-debug_project_lidar: false
+debug_project_lidar: true
 
 # Enable debug logging (status table, LiDAR PCL bbox, TF cache hits).
 debug: false

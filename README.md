@@ -114,8 +114,7 @@ docker compose run --rm summer_school_demo \
 ### Terminal 2 — start bag replay
 
 ```bash
-docker exec -it forestsphere_summer_school_demo bash
-/workspace/demo/scripts/replay_bag.sh mapping
+docker compose exec summer_school_demo /workspace/demo/scripts/replay_bag.sh mapping
 ```
 
 Replace `mapping` with `full` or `prune` to match the stack mode. Press **Space** to pause/resume, **s** to step, **Ctrl-C** to stop.
